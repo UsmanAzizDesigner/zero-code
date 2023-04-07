@@ -1,9 +1,9 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import { Layout } from 'antd';
+// import { Layout } from 'antd';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './routes.js'
-const { Header, Footer, Sider, Content } = Layout;
+// const { Header, Footer, Sider, Content } = Layout;
 
 
 function App() {
