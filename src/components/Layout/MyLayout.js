@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Divider, Layout, Menu } from 'antd'
+import { Divider, Layout, Menu, Typography } from 'antd'
 import { items } from './NavItems/navItems'
-import { Col, Row, Button } from 'antd'
+import { Col, Row, Button, Breadcrumb } from 'antd'
 import './MyLayout.css'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom'
 
 const { Header, Content, Footer, Sider } = Layout
 // const { SubMenu } = Menu
@@ -15,6 +15,10 @@ function MyLayout() {
   const handleButtonClick = (button) => {
     setSelectedButton(button)
   }
+  const location = useLocation()
+  console.log('location', location.pathname)
+  const [activeBread, setActiveBread] = useState('')
+  console.log('activeBread', activeBread)
 
   const list = [];
 
@@ -38,13 +42,14 @@ function MyLayout() {
             <Menu
               theme="dark"
               defaultSelectedKeys={['1']}
-              className='h-[86vh] overflow-auto no-scroll'
+              className="h-[86vh] overflow-auto no-scroll"
               // style={{height:'86vh',overflow:'auto'}}
               mode="inline"
               items={items}
               activeClassName="active-menu"
-              onSelect={({item})=>{
-                console.log('item',item)
+              onSelect={({ item }) => {
+                console.log('item', item)
+                setActiveBread(item.props)
                 navigate(item.props.link)
               }}
               defaultOpenKeys={list}
@@ -156,7 +161,19 @@ function MyLayout() {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            <Outlet/>
+            <Breadcrumb separator=">">
+              <Breadcrumb.Item>
+                <Link to="/">Home</Link>
+              </Breadcrumb.Item>
+
+              {console.log('activeBread in JSX', activeBread?.breadcrumb)}
+              {activeBread?.breadcrumb?.map((bread) => {
+                // console.log('I am bread',bread)
+                return <Breadcrumb.Item key={bread}>{bread}</Breadcrumb.Item>
+              })}
+            </Breadcrumb>
+            <Typography className='page-title'>{activeBread?.title}</Typography>
+            <Outlet />
           </div>
         </Content>
       </Layout>

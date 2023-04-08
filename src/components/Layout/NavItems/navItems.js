@@ -1,20 +1,22 @@
 import { DesktopOutlined } from '@ant-design/icons'
 import { BsCircleFill } from 'react-icons/bs';
 
-function getItem(label, key, icon, children,link,defaultOpenKeys) {
+function getItem(label, key, icon, children,link,defaultOpenKeys,breadcrumb,title) {
   return {
     key,
     icon,
     children,
     label,
     link: link ? link : '/',
-    defaultopen: defaultOpenKeys? defaultOpenKeys: false
+    defaultopen: defaultOpenKeys? defaultOpenKeys: false,
+    breadcrumb,
+    title
   }
 }
 export const items = [
   getItem('Identity', 'identity', <DesktopOutlined />, [
     getItem('User & Roles', 'userandroles', <DesktopOutlined/>, [
-      getItem('Add', 'u-r-add',<BsCircleFill  className='mr-1'/>,null,"/add-user"),
+      getItem('Add', 'u-r-add',<BsCircleFill  className='mr-1'/>,null,"/add-user",false,['Identity','User & Roles', 'Add User'],'Add Users and Roles'),
       getItem('List', 'u-r-list',<BsCircleFill  className='mr-1'/>),
     ],"",true),
     getItem('User Stores', 'userstores', <DesktopOutlined />, [
