@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Divider, Layout, Menu, Typography } from 'antd'
 import { items } from './NavItems/navItems'
 import { Col, Row, Button, Breadcrumb } from 'antd'
@@ -16,18 +16,32 @@ function MyLayout() {
     setSelectedButton(button)
   }
   const location = useLocation()
-  console.log('location', location.pathname)
-  const [activeBread, setActiveBread] = useState('')
-  console.log('activeBread', activeBread)
+
+  const getActiveItem = (navItems) => {
+    for (var i = 0; i < navItems.length; i++) {
+      if (navItems[i]?.children && navItems[i]?.children?.length) {
+        return getActiveItem(navItems[i].children)
+      }
+      else if (navItems[i].link === location.pathname) {
+        return navItems[i];
+      }
+      return {};
+    }
+  }
+  const activeItem = useMemo(() => {
+    const item = getActiveItem(items)
+    if (item) return item;
+    return {};
+  }, [location.pathname, getActiveItem])
 
   const list = [];
 
-  function funcList(navItem){
+  function funcList(navItem) {
     navItem.forEach(item => {
-      if(item.defaultopen) {
+      if (item.defaultopen) {
         list.push(item.key)
       }
-      if(item?.children && item?.children?.length) {
+      if (item?.children && item?.children?.length) {
         funcList(item.children)
       }
     })
@@ -41,17 +55,16 @@ function MyLayout() {
           <>
             <Menu
               theme="dark"
-              defaultSelectedKeys={['1']}
+              defaultSelectedKeys={[activeItem.key]}
               className="h-[86vh] overflow-auto no-scroll"
               // style={{height:'86vh',overflow:'auto'}}
               mode="inline"
               items={items}
-              activeClassName="active-menu"
+              // activeClassName="active-menu"
               onSelect={({ item }) => {
-                console.log('item', item)
-                setActiveBread(item.props)
                 navigate(item.props.link)
               }}
+              is
               defaultOpenKeys={list}
             />
           </>
@@ -83,9 +96,8 @@ function MyLayout() {
                 : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
-              className={`text-1xl ${
-                selectedButton === 'Main' ? 'bg-white text-black' : ''
-              }`}
+              className={`text-1xl ${selectedButton === 'Main' ? 'bg-white text-black' : ''
+                }`}
             >
               Main
             </Button>
@@ -99,9 +111,8 @@ function MyLayout() {
                 : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
-              className={`text-1xl ${
-                selectedButton === 'Configure' ? 'bg-white text-black' : ''
-              }`}
+              className={`text-1xl ${selectedButton === 'Configure' ? 'bg-white text-black' : ''
+                }`}
             >
               Configure
             </Button>
@@ -115,9 +126,8 @@ function MyLayout() {
                 : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
-              className={`text-1xl ${
-                selectedButton === 'Tools' ? 'bg-white text-black' : ''
-              }`}
+              className={`text-1xl ${selectedButton === 'Tools' ? 'bg-white text-black' : ''
+                }`}
             >
               Tools
             </Button>
@@ -132,9 +142,8 @@ function MyLayout() {
               // text
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
-              className={`text-1xl ${
-                selectedButton === 'Action' ? 'bg-white text-black' : ''
-              }`}
+              className={`text-1xl ${selectedButton === 'Action' ? 'bg-white text-black' : ''
+                }`}
             >
               Action
             </Button>
@@ -165,14 +174,11 @@ function MyLayout() {
               <Breadcrumb.Item>
                 <Link to="/">Home</Link>
               </Breadcrumb.Item>
-
-              {console.log('activeBread in JSX', activeBread?.breadcrumb)}
-              {activeBread?.breadcrumb?.map((bread) => {
-                // console.log('I am bread',bread)
+              {activeItem?.breadcrumb?.map((bread) => {
                 return <Breadcrumb.Item key={bread}>{bread}</Breadcrumb.Item>
               })}
             </Breadcrumb>
-            <Typography className='page-title'>{activeBread?.title}</Typography>
+            <Typography className='page-title'>{activeItem?.title}</Typography>
             <Outlet />
           </div>
         </Content>
