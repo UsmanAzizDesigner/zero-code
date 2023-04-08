@@ -16,20 +16,21 @@ function MyLayout() {
     setSelectedButton(button)
   }
 
+  const list = [];
+
+  function funcList(navItem){
+    navItem.forEach(item => {
+      if(item.defaultopen) {
+        list.push(item.key)
+      }
+      if(item?.children && item?.children?.length) {
+        funcList(item.children)
+      }
+    })
+  }
+
   const renderMenuItems = () => {
-    // const list = [];
-    // items.forEach(item =>
-    //   {
-    //   if( item?.childern && item?.childern?.length){
-    //     item.childern.forEach(ch => {
-    //       if(ch.defaultOpenKeys) list.push(ch.key)
-    //     })
-    //   }
-    //   else {
-    //     if(item.defaultOpenKeys) list.push(item.key)
-    //   }
-    //   })
-    //   console.log('list',list)
+    funcList(items)
     switch (selectedButton) {
       case 'Main':
         return (
@@ -46,26 +47,7 @@ function MyLayout() {
                 console.log('item',item)
                 navigate(item.props.link)
               }}
-              defaultOpenKeys={[
-                'userandroles',
-                'userstores',
-                'claims',
-                'servicesproviders',
-                'identityproviders',
-                'emailtemplates',
-                'keystores',
-                'consantpurposes',
-                'oidcscopes',
-                'streaminganalytics',
-                'event',
-                'functionlibraries',
-                'servicebus',
-                'carbonapplication',
-                'shutdownrestart',
-                'list',
-                'add'
-
-              ]}
+              defaultOpenKeys={list}
             />
           </>
         )
@@ -92,8 +74,8 @@ function MyLayout() {
               onClick={() => handleButtonClick('Main')}
               block
               {...(selectedButton === 'Main'
-                ? { primary: true }
-                : { text: true })}
+                ? { primary: "true" }
+                : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
               className={`text-1xl ${
@@ -108,8 +90,8 @@ function MyLayout() {
               onClick={() => handleButtonClick('Configure')}
               block
               {...(selectedButton === 'Configure'
-                ? { primary: true }
-                : { text: true })}
+                ? { primary: "true" }
+                : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
               className={`text-1xl ${
@@ -124,8 +106,8 @@ function MyLayout() {
               onClick={() => handleButtonClick('Tools')}
               block
               {...(selectedButton === 'Tools'
-                ? { primary: true }
-                : { text: true })}
+                ? { primary: "true" }
+                : { text: "true" })}
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
               className={`text-1xl ${
@@ -140,8 +122,8 @@ function MyLayout() {
               onClick={() => handleButtonClick('Action')}
               block
               {...(selectedButton === 'Action'
-                ? { primary: true }
-                : { text: true })}
+                ? { primary: "true" }
+                : { text: "true" })}
               // text
               type={'primary'}
               // type={selectedButton === 'Main' ? 'primary' : 'ghost'}
