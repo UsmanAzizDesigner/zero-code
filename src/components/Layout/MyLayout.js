@@ -4,6 +4,7 @@ import { items } from './NavItems/navItems'
 import { Col, Row, Button, Breadcrumb } from 'antd'
 import './MyLayout.css'
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom'
+import AppHeader from './Header/AppHeader'
 
 const { Header, Content, Footer, Sider } = Layout
 // const { SubMenu } = Menu
@@ -57,7 +58,6 @@ function MyLayout() {
               theme="dark"
               defaultSelectedKeys={[activeItem.key]}
               className="h-[86vh] overflow-auto no-scroll"
-              // style={{height:'86vh',overflow:'auto'}}
               mode="inline"
               items={items}
               // activeClassName="active-menu"
@@ -161,9 +161,9 @@ function MyLayout() {
       <Layout>
         <Header
           className="site-layout-sub-header-background"
-          style={{ padding: 0, textAlign: 'right', backgroundColor: 'red' }}
+          style={{ padding: 0, textAlign: 'right' }}
         >
-          {/* Your header content goes here */}
+          <AppHeader />
         </Header>
         <Content style={{ margin: '0 16px', marginTop: 24 }}>
           <div
